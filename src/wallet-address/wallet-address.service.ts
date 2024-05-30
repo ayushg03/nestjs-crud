@@ -7,32 +7,45 @@ import { UpdateWalletAddressDto } from './dto/update-wallet-address.dto';
 export class WalletAddressService {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: CreateWalletAddressDto) {
+  create(createWalletAddressDto: CreateWalletAddressDto) {
     return this.prisma.walletAddress.create({
-      data,
+      data: createWalletAddressDto,
     });
   }
 
-  async findAll() {
-    return this.prisma.walletAddress.findMany();
+  findAll() {
+    return this.prisma.walletAddress.findMany({
+      include: {
+        user: true,
+      },
+    });
   }
 
-  async findOne(id: number) {
+  findOne(id: number) {
     return this.prisma.walletAddress.findUnique({
       where: { id },
+      include: {
+        user: true,
+      },
     });
   }
 
-  async update(id: number, data: UpdateWalletAddressDto) {
+  update(id: number, updateWalletAddressDto: UpdateWalletAddressDto) {
     return this.prisma.walletAddress.update({
       where: { id },
-      data,
+      data: updateWalletAddressDto,
+      include: {
+        user: true,
+      },
     });
   }
 
-  async remove(id: number) {
+  remove(id: number) {
     return this.prisma.walletAddress.delete({
       where: { id },
+      include: {
+        user: true,
+      },
     });
   }
 }

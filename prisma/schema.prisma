@@ -8,19 +8,18 @@ datasource db {
 }
 
 model User {
-  id        Int             @id @default(autoincrement())
-  username  String
-  email     String          @unique
-  password  String
-  createdAt DateTime        @default(now())
-  addresses WalletAddress[]
+  id             Int             @id @default(autoincrement())
+  username       String
+  email          String          @unique
+  password       String
+  walletAddresses WalletAddress[]
 }
 
 model WalletAddress {
-  id        Int      @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   address   String
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
+  user      User    @relation(fields: [userId], references: [id])
 }
+
 

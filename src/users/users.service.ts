@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { Prisma } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -8,32 +7,45 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: CreateUserDto) {
+  create(createUserDto: CreateUserDto) {
     return this.prisma.user.create({
-      data,
+      data: createUserDto,
     });
   }
 
-  async findAll() {
-    return this.prisma.user.findMany();
+  findAll() {
+    return this.prisma.user.findMany({
+      include: {
+        walletAddresses: true,
+      },
+    });
   }
 
-  async findOne(id: number) {
+  findOne(id: number) {
     return this.prisma.user.findUnique({
       where: { id },
+      include: {
+        walletAddresses: true,
+      },
     });
   }
 
-  async update(id: number, data: UpdateUserDto) {
+  update(id: number, updateUserDto: UpdateUserDto) {
     return this.prisma.user.update({
       where: { id },
-      data,
+      data: updateUserDto,
+      include: {
+        walletAddresses: true,
+      },
     });
   }
 
-  async remove(id: number) {
+  remove(id: number) {
     return this.prisma.user.delete({
       where: { id },
+      include: {
+        walletAddresses: true,
+      },
     });
   }
 }
